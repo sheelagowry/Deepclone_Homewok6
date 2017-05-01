@@ -15,10 +15,10 @@ public class GraphTask {
    
    public void test1() throws CloneNotSupportedException {
 	   
-	   	System.out.println ("--------TEST1 #Create Random Simple Graph------------ ");
+	   	  System.out.println ("--------TEST1 #Create Random Simple Graph------------ ");
 	      Graph original = new Graph ("G");
 	   	  original.createRandomSimpleGraph(5, 4); //
-	   	 System.out.println ("---------original-----------");
+	   	  System.out.println ("---------original-----------");
 	      System.out.println (original);
 	     
 	   
@@ -41,16 +41,16 @@ public class GraphTask {
 	   
 	  	System.out.println ("--------TEST2 # Create Vertex------------ ");
 	      Graph original = new Graph ("G");
-	   	  original.createVertex("o0");
+	   	  original.createVertex("Original0");
 	   	 System.out.println ("-------original------------- ");
-	      System.out.println (original.first);
+	      System.out.println (original);
 	     
 	      Graph clone =  (Graph) original.clone();
 	      System.out.println ("----------clone---------- ");
-	      System.out.println (clone.first);
+	      System.out.println (clone);
 	     
 	   	    
-	      original.first.id("ovvv1");
+	      original.first.id("Modified1");
 	      System.out.println ("-------modified original------------- ");
 	      System.out.println (original);
 	   
@@ -372,44 +372,44 @@ public class GraphTask {
    // Overriding clone() method to create a deep copy of an object.
   	protected Object clone() throws CloneNotSupportedException {
   		Vertex v = first;  
-  		HashMap<Vertex, Vertex> vertexMap = new HashMap<Vertex, Vertex>(); //hashmap is used to link each vertex to any (number of) vertices easily. 
+  		HashMap<Vertex, Vertex> vertexMap = new HashMap<Vertex, Vertex>();//here HashMap has two parameters original and the cloned. // that is original valune of the vertex is mapped to the clone value 
   		HashMap<Arc, Arc> arcMap = new HashMap<Arc, Arc>();
   		
-        while (v != null) {
-        	if(!vertexMap.containsKey(v)){
-          	  vertexMap.put(v, new Vertex(v.id));
+        while (v != null) { // while vertex v  is not equal to null. 
+        	if(!vertexMap.containsKey(v)){ //if the vertexmap does not contain any cloned key value of the vertex previousl. 
+          	  vertexMap.put(v, new Vertex(v.id));// then vertexmap clone a original vertex v and set a new cloned key value of the vertex 
             }
-        	Arc a = v.first;
-          while (a != null) {
-              if(!arcMap.containsKey(a)){
-            	  arcMap.put(a, new Arc(a.id));
+        	Arc a = v.first; // here  variavle 'a' of the Arc is assigened to the vertex 'v.first'
+          while (a != null) { //while 'a' is not equals to 'null'
+              if(!arcMap.containsKey(a)){ //if arcmap doesnt contain a key of the arc 'a',
+            	  arcMap.put(a, new Arc(a.id)); //then arcMap clones a original arc 'a' and returns a new cloned  key value of the arc.
               }
-              if(a.target != null && !vertexMap.containsKey(a.target)){
-            	  vertexMap.put(a.target, new Vertex(a.target.id));
+              if(a.target != null && !vertexMap.containsKey(a.target)){ //if a.traget is not equal to null and the vertexmap doesnt contain any cloned key value for 'a.target'
+            	  vertexMap.put(a.target, new Vertex(a.target.id)); //then vertexMap clones a original 'a.target' and assign a new cloned key value of vertex 'a.target'.
               }
-              a = a.next;
+              a = a.next; // 'a' is set to 'a.next'
            }
-          v = v.next;
+          v = v.next; //and 'v' is set to 'v.next'
         }
         
-        
-        v = first;
-        while (v != null) {
-           Arc a = v.first;
-           Vertex cv= vertexMap.get(v);
-           Arc ca= arcMap.get(a);
-           cv.first = ca;
-           while (a != null) {
-        	 ca = arcMap.get(a);
-             ca.target = vertexMap.get(a.target);
-             ca.next = arcMap.get(a.next); 
-             a = a.next;
+       // here i am tracing the vertex and the arc
+        v = first; // v is assigned to first;
+        while (v != null) { //while v is not equal to null
+           Arc a = v.first; // set 'v.first' equal to Arc variable 'a'
+           Vertex cv= vertexMap.get(v); // here it returns the cloned key value and assigned it to cv(cloned vertex)
+           Arc ca= arcMap.get(a); // here it returns the cloned key value and assigned it to ca(cloned arc)
+           cv.first = ca; // then cv.first is assigned to ca 
+           while (a != null) { // while a is not equal to null
+        	 ca = arcMap.get(a); // then retun the cloned key value of 'a' and assigns it to ca(cloned arc)
+             ca.target = vertexMap.get(a.target); // here it returns theccloned key value of 'a.target' and assigns it to 'ca.target'
+             ca.next = arcMap.get(a.next); // here it returns the cloned key value of 'a.next' and assigns it to 'ca.next'
+             a = a.next; // and assigned 'a' to 'a.next'
            }
-           cv.next = vertexMap.get(v.next);
-           v = v.next;
+           cv.next = vertexMap.get(v.next); // here it returns the cloned key value of 'v.next' and assigns it to 'cv.next'
+           v = v.next; // and assigned 'v.next' to the 'v'
         }
         
-        return new Graph(id, vertexMap.get(first));
+        return new Graph(id, vertexMap.get(first)); //here it retruns the Graphs 
   	}
   	
    }
